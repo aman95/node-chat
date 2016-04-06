@@ -1,0 +1,17 @@
+{
+  "name": "node_chat_socketio",
+  "version": "1.0.0",
+  "description": "A realtime chat app with Sockets.io",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "author": "Aman Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.10",
+    "socket.io": "^1.4.5"
+  }
+}

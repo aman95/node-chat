@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Node Chat using Socket.io</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+  <script src="js/main.js"></script>
+
+</head>
+<body ng-app="nodeChat">
+
+  <div class="container" ng-controller="activeChats" id="chatContainer">
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        <h1>Welcome to Node Chat App</h1>
+      </div>
+    </div>
+
+    <div ng-repeat="chat in chats" class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ chat.name }}</h3>
+        <p>{{ chat.email}}</p>
+      </div>
+      <div class="panel-body">
+        <div ng-repeat="chatMsg in chat.chatMsgs" class="row" ng-switch="chatMsg.sentBy">
+          <div ng-switch-when="cust" class="col-sm-offset-1 col-sm-6">
+            <div class="alert alert-success"><strong>Customer </strong>{{ chatMsg.msg }}</div>
+          </div>
+          <div ng-switch-when="admin" class="col-sm-offset-5 col-sm-6">
+            <div class="alert alert-info"><strong>Admin </strong> {{ chatMsg.msg }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Container ends here... -->
+  </div>
+
+<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<script>
+  // var socket = io.connect('http://localhost:3000');
+  // socket.on('greet', function (data) {
+  //   console.log(data);
+  //   //socket.emit('msgFromCustomer', { my: 'data' });
+  // });
+  // socket.on('msgFromAdmin', function (data) {
+  // 	console.log(data);
+  // });
+</script>
+
+</body>
+</html>
