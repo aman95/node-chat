@@ -1,11 +1,12 @@
 var express = require('express');
 var path = require('path');
+require('dotenv').config();
 var bodyParser = require('body-parser');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://aman:alphaprime@ds025449.mlab.com:25449/node-chat');
+mongoose.connect(process.env.M_LAB_URI);
 
 server.listen(3000);
 
@@ -28,7 +29,7 @@ var Chat = require('./models/Chat');
 var sendNotification = function(data) {
   var headers = {
     "Content-Type": "application/json",
-    "Authorization": "Basic YzY3MjY5M2YtZDU3NS00Y2MwLWIxZjktZWQ4M2JkMjI5NTU1"
+    "Authorization": process.env.ONE_SIGNAL_AUTH
   };
   
   var options = {
@@ -146,7 +147,7 @@ app.post('/apis/chat/user/msg', function (req, res) {
 app.get('/sendMsg', function (req, res) {
 	io.sockets.emit('msgFromAdmin', {reply: 'from outside'});
 	var message = { 
-		app_id: "ef5ebf6d-220c-40a6-8548-c8bb58fb5e69",
+		app_id: process.env.ONE_SIGNAL_APP_ID,
 		contents: {"en": "Hey! User whats up."},
 		headings: {"en": "Message from Admin - NodeChat"},
 		included_segments: ["All"],
@@ -278,7 +279,7 @@ io.on('connection', function (socket) {
     	if(err) console.log({error: 404});
     	else {
     		var message = { 
-				app_id: "ef5ebf6d-220c-40a6-8548-c8bb58fb5e69",
+				app_id: process.env.ONE_SIGNAL_APP_ID,
 				contents: {"en": data.msg},
 				headings: {"en": "Message from Admin - NodeChat"},
 				include_player_ids: [doc.oneSignalPlayerID],
