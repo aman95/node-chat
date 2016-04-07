@@ -136,6 +136,13 @@ app.post('/apis/chat/user/msg', function (req, res) {
 				var data = model.chatMsgs.pop();
 				console.log(data);
 				io.sockets.emit(id, data);
+
+				Chat.find({},function (err, doc) {
+			    	console.log(err);
+			        io.sockets.emit('recentChatsFromServer', doc);
+			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
+				// io.sockets.emit('msgFromAdmin', {reply: 'from outside'});
+				
 				res.json({success: true, data:data});
 			} else {
 				res.json({error:502});
