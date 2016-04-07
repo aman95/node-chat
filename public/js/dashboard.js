@@ -17,7 +17,7 @@ app.controller('activeChats', ['$scope','$http', function($scope,$http) {
 
 	$http({
 	  method: 'GET',
-	  url: 'http://localhost:3000/apis/chats/recent'
+	  url: 'http://'+window.location.host+'/apis/chats/recent'
 	}).then(function successCallback(response) {
 	    console.log(response);
 	    $scope.chats = response.data;
