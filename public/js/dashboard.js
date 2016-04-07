@@ -1,4 +1,5 @@
-var socket = io.connect('http://localhost:3000');
+// var socket = io.connect('http://localhost:3000');
+var socket = io.connect('http://'+window.location.host);
 try {
 	var uid = window.location.href.split('/')[4].substring(0,24);
 } catch(err) {
