@@ -142,7 +142,7 @@ app.post('/apis/chat/user/msg', function (req, res) {
 			        io.sockets.emit('recentChatsFromServer', doc);
 			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 				// io.sockets.emit('msgFromAdmin', {reply: 'from outside'});
-				
+
 				res.json({success: true, data:data});
 			} else {
 				res.json({error:502});
@@ -289,6 +289,7 @@ io.on('connection', function (socket) {
 				app_id: process.env.ONE_SIGNAL_APP_ID,
 				contents: {"en": data.msg},
 				headings: {"en": "Message from Admin - NodeChat"},
+				android_background_data: true,
 				include_player_ids: [doc.oneSignalPlayerID],
 				data: {
 					msg: data.msg

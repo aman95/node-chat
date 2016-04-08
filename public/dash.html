@@ -86,14 +86,14 @@
             <!-- <li role="presentation" class="active"><a href="#">Home</a></li>
             <li role="presentation"><a href="#">Profile</a></li>
             <li role="presentation"><a href="#">Messages</a></li> -->
-            <li role="presentation" ng-repeat="chat in chats"><a href="/chat/{{chat._id}}"><strong>{{chat.name}}</strong><br>{{chat.email}}</a></li>
+            <li role="presentation" ng-repeat="chat in chats | filter:searchUser" ng-class="{ 'active' : chat._id === uid }"><a href="/chat/{{chat._id}}"><strong>{{chat.name}}</strong><br>{{chat.email}}</a></li>
 
 
           </ul>
         </div>
         <div class="panel-footer">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search User" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="Search User" ng-model="searchUser" aria-describedby="basic-addon1">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -113,7 +113,7 @@
           <h3 class="panel-title">{{name}}</h3>
           <p>{{email}}</p>
         </div>
-        <div class="panel-body" id="chatPanelBody">
+        <div class="panel-body" id="chatPanelBody" scroll-to-bottom >
           <div ng-repeat="chatMsg in chatMsgs" class="row" ng-switch="chatMsg.sentBy">
             <div ng-switch-when="cust" class="col-sm-offset-1 col-sm-6">
               <div class="alert alert-success"><strong>Customer </strong>{{ chatMsg.msg }}</div>

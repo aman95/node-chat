@@ -16,6 +16,8 @@ var app = angular.module('nodeChat',[]);
 
 app.controller('activeChats', ['$scope','$http', function($scope,$http) {
 
+	$scope.uid = uid;
+
 	$http({
 	  method: 'GET',
 	  url: BASE_URL+'/apis/chats/recent'
@@ -36,6 +38,21 @@ app.controller('activeChats', ['$scope','$http', function($scope,$http) {
 
 }]);
 
+app.directive('scrollToBottom', function() {
+    return {
+        restrict: 'A',
+        priority: 0,
+        link: function(scope, element) {
+		      scope.$watchCollection('chatMsgs', function() {
+        		var $list = $('#chatPanelBody');
+				var scrollHeight = $list.prop('scrollHeight');
+				$list.animate({scrollTop: scrollHeight}, 500);	
+		      });
+		    }
+    };
+});
+
+
 app.controller('chatMsgs', ['$scope','$http', function($scope, $http){
 	if(uid === null) return;
 	$http({
@@ -46,10 +63,10 @@ app.controller('chatMsgs', ['$scope','$http', function($scope, $http){
 	    $scope.name = response.data.name;
 	    $scope.email = response.data.email;
 	    $scope.chatMsgs = response.data.chatMsgs;
-	    //$scope.$apply();
 	  }, function errorCallback(response) {
 	    $scope.chatMsgs = [];
 	  });
+
 	socket.on(uid, function (data) {
 		console.log(data);
 		// var sChat = { "email": data.email, "oneSignalPlayerID": "sdfsdfb0sd0bfd", "name": data.name }
@@ -68,7 +85,6 @@ app.controller('chatMsgs', ['$scope','$http', function($scope, $http){
 		});
 		$scope.chatMsgs.push(newChatMsg);
 		$scope.msgText = '';
-		// $scope.$apply();
 
 	}
 
