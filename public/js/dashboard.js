@@ -75,6 +75,7 @@ app.controller('chatMsgs', ['$scope','$http', function($scope, $http){
 	});
 
 	$scope.sendMsgSocket = function() {
+		if($scope.msgText.length == 0) return;
 		var newChatMsg = {
 			msg: $scope.msgText,
 			sentBy: "admin"
