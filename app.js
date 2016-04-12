@@ -288,10 +288,11 @@ io.on('connection', function (socket) {
     		var message = { 
 				app_id: process.env.ONE_SIGNAL_APP_ID,
 				contents: {"en": data.msg},
-				headings: {"en": "Message from Admin - NodeChat"},
+				headings: {"en": process.env.CHAT_MSG_HEAD},
 				android_background_data: true,
 				include_player_ids: [doc.oneSignalPlayerID],
 				data: {
+					type: "chat"
 					msg: data.msg
 				}
 			};
