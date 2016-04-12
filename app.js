@@ -292,7 +292,7 @@ io.on('connection', function (socket) {
 				android_background_data: true,
 				include_player_ids: [doc.oneSignalPlayerID],
 				data: {
-					type: "chat"
+					type: "chat",
 					msg: data.msg
 				}
 			};
