@@ -96,19 +96,39 @@ app.post('/apis/chat/user/create', function (req, res) {
 	var name = req.body.name;
 	var phone = req.body.phone;
 
+	var greetChat = {
+  		msg: process.env.CHAT_GREET_MSG,
+  		sentBy: 'admin'
+  	};
+
 	Chat.findOneAndUpdate(
 		{email: email},
 		{
 			name: name,
 			email: email,
 			phone: phone,
-			oneSignalPlayerID: oneSignalPID
+			oneSignalPlayerID: oneSignalPID,
+			$push: {chatMsgs: greetChat}
 		},
 		{safe: true, upsert: true, setDefaultsOnInsert:true, new:true},
 		function(err, model) {
 			if(err) {
 				res.json({error: 502});
 			} else {
+				var payload = model.chatMsgs.pop();
+	    		var message = { 
+					app_id: process.env.ONE_SIGNAL_APP_ID,
+					contents: {"en": process.env.CHAT_GREET_MSG},
+					headings: {"en": process.env.CHAT_MSG_HEAD},
+					android_background_data: true,
+					include_player_ids: [oneSignalPID],
+					data: {
+						type: "chat",
+						chat: payload
+					}
+				};
+
+				sendNotification(message);
 				res.json(model);
 			}			
 		}
