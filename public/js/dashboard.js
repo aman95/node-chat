@@ -85,7 +85,7 @@ app.controller('chatMsgs', ['$scope','$http', function($scope, $http){
 			userID: uid,
 			msg: $scope.msgText
 		});
-		$scope.chatMsgs.push(newChatMsg);
+		// $scope.chatMsgs.push(newChatMsg);
 		$scope.msgText = '';
 
 	}

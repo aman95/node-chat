@@ -129,6 +129,10 @@ app.post('/apis/chat/user/create', function (req, res) {
 				};
 
 				sendNotification(message);
+				Chat.find({},function (err, doc) {
+			    	// console.log(err);
+			        io.sockets.emit('recentChatsFromServer', doc);
+			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 				res.json(model);
 			}			
 		}
@@ -216,6 +220,11 @@ io.on('connection', function (socket) {
 			};
 
 			sendNotification(message);
+			io.sockets.emit(data.userID, payload);
+			Chat.find({},function (err, doc) {
+			    	// console.log(err);
+			        io.sockets.emit('recentChatsFromServer', doc);
+			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
     		// console.log(doc);
     	}
     });
