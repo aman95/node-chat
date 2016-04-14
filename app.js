@@ -74,7 +74,7 @@ app.get('/chat/:id', function (req, res) {
 app.get('/apis/chats/recent', function (req, res) {
 
     Chat.find({},function (err, doc) {
-    	console.log(err);
+    	// console.log(err);
         res.jsonp(doc);
     }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 });
@@ -94,19 +94,23 @@ app.post('/apis/chat/user/create', function (req, res) {
 	var email = req.body.email;
 	// var msg = req.body.chatMsg;
 	var name = req.body.name;
+	var phone = req.body.phone;
 
 	Chat.findOneAndUpdate(
 		{email: email},
 		{
 			name: name,
 			email: email,
+			phone: phone,
 			oneSignalPlayerID: oneSignalPID
 		},
 		{safe: true, upsert: true, setDefaultsOnInsert:true, new:true},
 		function(err, model) {
-			// console.log("Error: "+err);
-			// console.log("Model: "+model);
-			res.json(model);
+			if(err) {
+				res.json({error: 502});
+			} else {
+				res.json(model);
+			}			
 		}
 	);
 });
@@ -116,6 +120,9 @@ app.post('/apis/chat/user/msg', function (req, res) {
 	//var email = req.body.email;
 	var msg = req.body.chatMsg;
 	var id = req.body.chatID;
+
+	console.log("Chat submit req: ");
+	console.log(req.body);
 
 	var message = {
         sentBy: 'cust',
@@ -134,140 +141,30 @@ app.post('/apis/chat/user/msg', function (req, res) {
 			// console.log("Model: "+model);
 			if(!err) {
 				var data = model.chatMsgs.pop();
-				console.log(data);
+				// console.log(data);
 				io.sockets.emit(id, data);
 
 				Chat.find({},function (err, doc) {
-			    	console.log(err);
+			    	// console.log(err);
 			        io.sockets.emit('recentChatsFromServer', doc);
 			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 				// io.sockets.emit('msgFromAdmin', {reply: 'from outside'});
-
+				console.log("Chat res success ");
 				res.json({success: true, data:data});
 			} else {
+				console.log("Chat res error ");
 				res.json({error:502});
 			}
 			
 		}
 	);
 });
-app.get('/sendMsg', function (req, res) {
-	io.sockets.emit('msgFromAdmin', {reply: 'from outside'});
-	var message = { 
-		app_id: process.env.ONE_SIGNAL_APP_ID,
-		contents: {"en": "Hey! User whats up."},
-		headings: {"en": "Message from Admin - NodeChat"},
-		included_segments: ["All"],
-		data: {
-			msg: "Hey Buddy"
-		}
-	};
 
-	sendNotification(message);
-	res.json({status:true});
-});
-
-app.post('/cust/chat', function (req, res) {
-	var oneSignalPID = req.body.player_id;
-	var email = req.body.email;
-	var msg = req.body.chatMsg;
-	var name = req.body.name;
-
-	var rChat = {
-        sentBy: 'cust',
-        msg: req.body.chatMsg
-    };
-
-	Chat.findOneAndUpdate(
-		{email: email},
-		{
-			name: name,
-			email: email,
-			oneSignalPlayerID: oneSignalPID,
-			$push: {chatMsgs: rChat}
-		},
-		{safe: true, upsert: true},
-		function(err, model) {
-			console.log("Error: "+err);
-			console.log("Model: "+model);
-			Chat.findOne({email: email}, function (err, chat) {
-				if(!err)
-					res.json(chat);
-				else res.send("error");
-			});
-		}
-	);
-
-	// Chat.findOne({email: email}, function (err, chat) {
-	// 	if(err)
-	// 		console.log("Error occurred: "+err);
-
-	// 	else if(!chat) {
-	// 		console.log("Record does not exists...");
-
-	// 		var newChat = new Chat({
-	// 			name: name,
-	// 			email: email,
-	// 			oneSignalPlayerID: oneSignalPID,
-	// 			chatMsgs: [{
-	// 			    sentBy: "cust",
-	// 			    msg: msg
-	// 			}]
-	// 		});
-
-	// 		newChat.save(function(err,result) {
-	// 			if (err) {
-	// 			  console.log('Error occurred while saving Chat!');
-	// 			} else {
-	// 			  console.log('Chat saved successfully!');
-	// 			  res.json(result);
-	// 			}
-	// 		});
-	// 	}
-	// 	else {
-	// 		console.log("Found: "+chat);
-
-	// 		chat.push
-
-	// 		res.send(chat);
-	// 	}
-			
-	// });
-
-	// res.send("success");
-
-});
-
-app.get('/sendObj', function (req, res) {
-	io.sockets.emit('msgFromServer', {
-		name: "test",
-		player_id: "sdfsdfb0sd0bfd",
-		email: "test@gmail.com",
-		chatMsgs: [
-			{
-				sentBy: "cust",
-				msg: "Hey there, I need some help regarding my current request"
-			},
-			{
-				sentBy: "admin",
-				msg: "Welcome, Tell us your problem"
-			},
-			{
-				sentBy: "cust",
-				msg: "My current request is not showing in the requests page in the app"
-			}
-		]
-	});
-  res.json({status:true});
-});
-// app.get('/', function (req, res) {
-//   res.sendFile(__dirname + '/index.html');
-// });
 
 
 // ===================================== socket Functions ===============================================
 io.on('connection', function (socket) {
-  console.log(socket.id);
+  // console.log(socket.id);
   socket.emit('greet', { hey: 'there' });
   // socket.on('msgFromCustomer', function (data) {
   // 	socket.emit('msgFromAdmin', {response: 'from Admin'});
@@ -282,9 +179,10 @@ io.on('connection', function (socket) {
   	Chat.findOneAndUpdate({ _id: data.userID},{
 			$push: {chatMsgs: aChat}
 		},
-		{safe: true},function (err, doc) {
+		{safe: true, new:true},function (err, doc) {
     	if(err) console.log({error: 404});
     	else {
+    		var payload = doc.chatMsgs.pop();
     		var message = { 
 				app_id: process.env.ONE_SIGNAL_APP_ID,
 				contents: {"en": data.msg},
@@ -293,7 +191,7 @@ io.on('connection', function (socket) {
 				include_player_ids: [doc.oneSignalPlayerID],
 				data: {
 					type: "chat",
-					msg: data.msg
+					chat: payload
 				}
 			};
 

@@ -63,6 +63,7 @@ app.controller('chatMsgs', ['$scope','$http', function($scope, $http){
 	    $scope.name = response.data.name;
 	    $scope.email = response.data.email;
 	    $scope.chatMsgs = response.data.chatMsgs;
+	    $scope.phone = response.data.phone;
 	  }, function errorCallback(response) {
 	    $scope.chatMsgs = [];
 	  });

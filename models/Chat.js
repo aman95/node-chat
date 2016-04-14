@@ -10,6 +10,7 @@ var chatSchema = new Schema({
     name: String,
     email: { type: String, required: true, unique: true },
     oneSignalPlayerID: { type: String, required: true },
+    phone: { type: String, required: true},
     chatMsgs: [{
         sentBy: String,
         timeStamp: { type : Date, default : Date.now },
