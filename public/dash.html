@@ -35,25 +35,8 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li>
         <li><a href="#">All Users</a></li>
-<!--         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li> -->
       </ul>
-<!--       <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form> -->
+
       <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#">Link</a></li> -->
         <li class="dropdown">
@@ -83,12 +66,7 @@
         </div>
         <div class="panel-body" id="activeChatsPanelBody">
           <ul class="nav nav-pills nav-stacked">
-            <!-- <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">Profile</a></li>
-            <li role="presentation"><a href="#">Messages</a></li> -->
             <li role="presentation" ng-repeat="chat in chats | filter:searchUser" ng-class="{ 'active' : chat._id === uid }"><a href="/chat/{{chat._id}}"><strong>{{chat.name}}</strong><br>{{chat.email}}</a></li>
-
-
           </ul>
         </div>
         <div class="panel-footer">
@@ -115,11 +93,38 @@
         </div>
         <div class="panel-body" id="chatPanelBody" scroll-to-bottom >
           <div ng-repeat="chatMsg in chatMsgs" class="row" ng-switch="chatMsg.sentBy">
-            <div ng-switch-when="cust" class="col-sm-offset-1 col-sm-6">
+            <!-- <div ng-switch-when="cust" class="col-sm-offset-1 col-sm-6">
               <div class="alert alert-success"><strong>Customer </strong>{{ chatMsg.msg }}</div>
             </div>
             <div ng-switch-when="admin" class="col-sm-offset-5 col-sm-6">
               <div class="alert alert-info"><strong>Admin </strong> {{ chatMsg.msg }}</div>
+            </div> -->
+            <div ng-switch-when="cust" class="chatBubbleCustomer">
+              <div class="chatBubbleTitle">
+                {{name}}        
+              </div>
+              <div class="chatBubbleTime">
+                <!-- Apr 19, 11:30 PM -->
+                {{ chatMsg.timeStamp| date:'MMM d, h:mm a':'yyyy-MM-dd HH:mm:ss Z'}}
+              </div>
+              <div class="chatBubbleMsg">
+                {{ chatMsg.msg }}
+              </div>
+            </div>
+                <!-- <div ng-switch-when="admin" class="col-sm-offset-5 col-sm-6">
+                  <div class="alert alert-info"><strong>Admin </strong> {{ chatMsg.msg }}</div>
+                </div> -->
+            <div ng-switch-when="admin" class="chatBubbleAdmin">
+              <div class="chatBubbleTitle">
+                Osaarthi        
+              </div>
+              <div class="chatBubbleTime">
+                <!-- Apr 19, 11:30 PM -->
+                {{ chatMsg.timeStamp| date:'MMM d, h:mm a':'yyyy-MM-dd HH:mm:ss Z'}}
+              </div>
+              <div class="chatBubbleMsg">
+                {{ chatMsg.msg }}
+              </div>
             </div>
           </div>
         </div>

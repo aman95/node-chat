@@ -70,13 +70,18 @@ app.get('/chat/:id', function (req, res) {
     res.sendFile(path.join(__dirname, './public', 'dash.html'));
 });
 
+app.get('/webview/chat/:id', function (req, res) {
+
+    res.sendFile(path.join(__dirname, './views', 'webviewChat.html'));
+});
+
 //APIS
 app.get('/apis/chats/recent', function (req, res) {
 
     Chat.find({},function (err, doc) {
     	// console.log(err);
         res.jsonp(doc);
-    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
+    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'phone':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 });
 
 app.get('/apis/chat/:id', function (req, res) {
@@ -132,7 +137,7 @@ app.post('/apis/chat/user/create', function (req, res) {
 				Chat.find({},function (err, doc) {
 			    	// console.log(err);
 			        io.sockets.emit('recentChatsFromServer', doc);
-			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
+			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'phone':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 				res.json(model);
 			}			
 		}
@@ -171,7 +176,7 @@ app.post('/apis/chat/user/msg', function (req, res) {
 				Chat.find({},function (err, doc) {
 			    	// console.log(err);
 			        io.sockets.emit('recentChatsFromServer', doc);
-			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
+			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'phone':1, 'updatedAt':1, 'oneSignalPlayerID':1});
 				// io.sockets.emit('msgFromAdmin', {reply: 'from outside'});
 				console.log("Chat res success ");
 				res.json({success: true, data:data});
@@ -224,7 +229,7 @@ io.on('connection', function (socket) {
 			Chat.find({},function (err, doc) {
 			    	// console.log(err);
 			        io.sockets.emit('recentChatsFromServer', doc);
-			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'updatedAt':1, 'oneSignalPlayerID':1});
+			    }).sort({'updatedAt': -1}).select({ 'name': 1, '_id': 1, 'email':1, 'phone':1, 'updatedAt':1, 'oneSignalPlayerID':1});
     		// console.log(doc);
     	}
     });

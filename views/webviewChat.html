@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Osaarthi Admin Chat</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+	
+	<meta name="viewport" content="initial-scale=.80, maximum-scale=.80, minimum-scale=.80, user-scalable=no">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/wv-chat.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+  <!-- <script src="js/main.js"></script> -->
+  <script src="/js/wv-chat.js"></script>
+
+</head>
+<body ng-app="nodeChat" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0">
+
+
+
+<!-- Chat window -->
+
+  
+  <div class="panel panel-primary" id="chatPanel" ng-controller="chatMsgs">
+    <!-- <div class="panel-heading">
+      <h3 class="panel-title">{{name}} ( {{phone}} )</h3>
+      <p>{{email}}</p>
+    </div> -->
+    <div class="panel-body" id="chatPanelBody" scroll-to-bottom >
+      <div ng-repeat="chatMsg in chatMsgs" class="row" ng-switch="chatMsg.sentBy">
+        <!-- <div ng-switch-when="cust" class="col-sm-offset-1 col-sm-6">
+          <div class="alert alert-success"><strong>Customer </strong>{{ chatMsg.msg }}</div>
+        </div> -->
+        <div ng-switch-when="cust" class="chatBubbleCustomer">
+			<div class="chatBubbleTitle">
+				{{name}}				
+			</div>
+			<div class="chatBubbleTime">
+				<!-- Apr 19, 11:30 PM -->
+				{{ chatMsg.timeStamp| date:'MMM d, h:mm a':'yyyy-MM-dd HH:mm:ss Z'}}
+			</div>
+			<div class="chatBubbleMsg">
+				{{ chatMsg.msg }}
+			</div>
+		</div>
+        <!-- <div ng-switch-when="admin" class="col-sm-offset-5 col-sm-6">
+          <div class="alert alert-info"><strong>Admin </strong> {{ chatMsg.msg }}</div>
+        </div> -->
+        <div ng-switch-when="admin" class="chatBubbleAdmin">
+			<div class="chatBubbleTitle">
+				Osaarthi				
+			</div>
+			<div class="chatBubbleTime">
+				<!-- Apr 19, 11:30 PM -->
+				{{ chatMsg.timeStamp| date:'MMM d, h:mm a':'yyyy-MM-dd HH:mm:ss Z'}}
+			</div>
+			<div class="chatBubbleMsg">
+				{{ chatMsg.msg }}
+			</div>
+		</div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Reply</span>
+        <input type="text" class="form-control" ng-model="msgText" placeholder="Enter your message" aria-describedby="basic-addon1">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button" ng-click="sendMsgSocket()" ng-class="{ disabled : !msgText.length }">
+            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+
+<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

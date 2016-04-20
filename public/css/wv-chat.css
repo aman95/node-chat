@@ -1,41 +1,48 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
 body {
 	width: 100%;
 	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	/*overflow: hidden;*/
+	background: #bbb;
+}
+
+#chatPanel {
+	margin-bottom: 0px;
+	width: 100%;
+	height: 100%;
+
 }
 
 #chatPanelBody {
-	height: calc(100vh - 250px);
+	width: 100%;
+	/*margin-bottom: -56px;
+	padding-bottom: 56px;*/
+	height: calc(100% - 56px);
 	/* Firefox */
-	height: -moz-calc(100vh - 250px);
+	height: -moz-calc(100% - 56px);
 	/* WebKit */
-	height: -webkit-calc(100vh - 250px);
+	height: -webkit-calc(100% - 56px);
 	/* Opera */
-	height: -o-calc(100vh - 250px);
-
-	overflow-y: scroll;
-}
-
-#activeChatsPanelBody {
-	height: calc(100vh - 220px);
-	/* Firefox */
-	height: -moz-calc(100vh - 220px);
-	/* WebKit */
-	height: -webkit-calc(100vh - 220px);
-	/* Opera */
-	height: -o-calc(100vh - 220px);
+	height: -o-calc(100% - 56px);
 
 	overflow-y: scroll;
 }
 
 .chatBubbleCustomer {
 		/*width: 270px;*/
-		min-width: 300px;
+		min-width: 240px;
 		max-width: 80%;
 		padding-top: 8px;
 		padding-bottom: 8px;
 		padding-right: 12px;
 		padding-left: 12px;
-		margin-left: 40px;
+		margin-left: 10px;
 		margin-top: 10px;
 		background: #DFF0D8;
 		border-top-left-radius: 0px;
@@ -49,13 +56,13 @@ body {
 	}
 .chatBubbleAdmin {
 	/*width: 270px;*/
-	min-width: 300px;
+	min-width: 200px;
 	max-width: 80%;
 	padding-top: 8px;
 	padding-bottom: 8px;
 	padding-right: 12px;
 	padding-left: 12px;
-	margin-right: 40px;
+	margin-right: 10px;
 	margin-top: 10px;
 	background: #D9EDF7;
 	border-top-left-radius: 12px;
