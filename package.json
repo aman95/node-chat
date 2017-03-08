@@ -4,7 +4,7 @@
   "description": "A realtime chat app with Sockets.io",
   "main": "app.js",
   "scripts": {
-    "test": "node app.js"
+    "start": "node app.js"
   },
   "author": "Aman Kumar",
   "license": "ISC",

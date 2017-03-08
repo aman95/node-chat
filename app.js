@@ -6,7 +6,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var mongoose = require('mongoose');
-mongoose.connect(process.env.M_LAB_URI);
+mongoose.connect(process.env.MONGO_URI);
 
 server.listen(3000);
 
