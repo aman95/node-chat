@@ -2,16 +2,16 @@
 >**A NodeJs backend for Admin-Client realtime chat system.**
 
 
-***
 
-##Install
+
+Install
 
 ```
 $ git clone https://github.com/aman95/node-chat
 $ npm install
 $ npm start
 ```
-##Configuration
+Configuration
 This project uses a **.env** file for storing database and other credentials.
 
 - **MONGO_URI** : Uri of MongoDB
